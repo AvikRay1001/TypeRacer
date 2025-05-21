@@ -12,7 +12,7 @@ class JoinRoomScreen extends StatefulWidget {
 class _JoinRoomScreenState extends State<JoinRoomScreen> {
   final TextEditingController _namedcontroller = TextEditingController();
   final TextEditingController _gameIdcontroller = TextEditingController();
-
+  
 
   @override
   void dispose() {

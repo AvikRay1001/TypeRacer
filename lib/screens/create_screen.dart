@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:typeracer/utils/socket_client.dart';
+import 'package:typeracer/utils/socket_methods.dart';
 import 'package:typeracer/widgets/custom_button.dart';
 import 'package:typeracer/widgets/custom_text_field.dart';
 
@@ -11,11 +13,15 @@ class CreateRoomScreen extends StatefulWidget {
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
   final TextEditingController _namedcontroller = TextEditingController();
+  final SocketMethods _socketMethods = SocketMethods();
+
   @override
   void dispose() {
     _namedcontroller.dispose();
     super.dispose();
   }
+
+
 
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -37,7 +43,7 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                   hintText: "Enter your nickname",
                 ),
                 const SizedBox(height: 30),
-                CustomButton(text: 'Create', onTap: () {}),
+                CustomButton(text: 'Create', onTap: () => _socketMethods.createGame(_namedcontroller.text)),
               ],
             ),
           ),
