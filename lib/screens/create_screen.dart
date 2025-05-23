@@ -16,13 +16,18 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   final SocketMethods _socketMethods = SocketMethods();
 
   @override
-  void dispose() {
-    _namedcontroller.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _socketMethods.updateGameListener(context);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _namedcontroller.dispose();
+  }
 
-
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
@@ -43,7 +48,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
                   hintText: "Enter your nickname",
                 ),
                 const SizedBox(height: 30),
-                CustomButton(text: 'Create', onTap: () => _socketMethods.createGame(_namedcontroller.text)),
+                CustomButton(
+                  text: 'Create',
+                  onTap: () => _socketMethods.createGame(_namedcontroller.text),
+                ),
               ],
             ),
           ),

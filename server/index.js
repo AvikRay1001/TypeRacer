@@ -15,6 +15,7 @@ app.use(express.json());
 const DB = "mongodb+srv://avikray1010:Eq1rFqVD2p5n0pc0@cluster0.ho22kii.mongodb.net/";
 
 io.on('connection', (socket) => {
+    console.log(`User Connected: ${socket.id}`);    
     socket.on('create-game', async({nickname}) => {
         try {
             let game = new Game();
@@ -28,6 +29,10 @@ io.on('connection', (socket) => {
             game.players.push(player);
             game = await game.save();
 
+            const gameId = game._id.toString();
+            socket.join(gameId);
+
+            io.to(gameId).emit('updateGame', game);
         } catch (error) {
             console.log(error);
         }
