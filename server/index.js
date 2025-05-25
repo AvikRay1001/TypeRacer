@@ -14,8 +14,10 @@ app.use(express.json());
 
 const DB = "mongodb+srv://avikray1010:Eq1rFqVD2p5n0pc0@cluster0.ho22kii.mongodb.net/";
 
+
+
 io.on('connection', (socket) => {
-    console.log(`User Connected: ${socket.id}`);    
+    console.log(`User Connected: ${socket.id}`);       
     socket.on('create-game', async({nickname}) => {
         try {
             let game = new Game();
@@ -46,6 +48,8 @@ mongooose.connect(DB).then(() => {
 }).catch((err) => {
     console.log(err)
 });
+
+
 
 server.listen(port, "0.0.0.0", () => {
     console.log(`Server started and running on port ${port}`);

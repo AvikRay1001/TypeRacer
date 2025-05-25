@@ -1,11 +1,8 @@
 const axios = require('axios');
 
 const getSentence = async () => {
-    const jokeData = await axios.get('https://api.quotable.io/random')
-
-    return jokeData.data.content.split(' ');
-
-}
-
+    const response = await axios.get('https://api.animechan.io/v1/quotes/random');
+    return response.data.data.content.split(' ');
+};
 
 module.exports = getSentence;
