@@ -12,20 +12,20 @@ class JoinRoomScreen extends StatefulWidget {
 
 class _JoinRoomScreenState extends State<JoinRoomScreen> {
   final TextEditingController _namedcontroller = TextEditingController();
-  final TextEditingController _gameIdcontroller = TextEditingController();
+  final TextEditingController _gameIDcontroller = TextEditingController();
   final SocketMethods _socketMethods = SocketMethods();
 
   @override
   void initState() {
     super.initState();
     _socketMethods.updateGameListener(context);
+    _socketMethods.notCorrectGameListener(context);
   }
-
 
   @override
   void dispose() {
     _namedcontroller.dispose();
-    _gameIdcontroller.dispose();
+    _gameIDcontroller.dispose();
     super.dispose();
   }
 
@@ -50,12 +50,19 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
-                  controller: _gameIdcontroller,
+                  controller: _gameIDcontroller,
                   hintText: "Enter Game ID",
                 ),
                 const SizedBox(height: 30),
-                CustomButton(text: 'Join', onTap: () => _socketMethods.joinGame(_namedcontroller.text, _gameIdcontroller.text,),
-            ),],
+                CustomButton(
+                  text: 'Join',
+                  onTap:
+                      () => _socketMethods.joinGame(
+                        _namedcontroller.text,
+                        _gameIDcontroller.text,
+                      ),
+                ),
+              ],
             ),
           ),
         ),

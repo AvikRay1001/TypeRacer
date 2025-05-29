@@ -12,23 +12,17 @@ class SocketMethods {
     }
   }
 
-
-
-  joinGame(String nickname,String gameId) {
-    if (nickname.isNotEmpty && gameId.isNotEmpty) {
-      _socketClient.emit('join-game', {
-        'nickname': nickname,
-        'gameId': gameId,
-      });
+  joinGame(String nickname, String gameID) {
+    if (nickname.isNotEmpty && gameID.isNotEmpty) {
+      _socketClient.emit('join-game', {'nickname': nickname, 'gameID': gameID});
     }
   }
-
-
 
   updateGameListener(BuildContext context) {
     _socketClient.on('updateGame', (data) {
       final gameStateProvider = Provider.of<GameStateProvider>(
-        context, listen: false
+        context,
+        listen: false,
       ).updateGameState(
         id: data['_id'],
         players: data['players'],
@@ -37,12 +31,22 @@ class SocketMethods {
         words: data['words'],
       );
 
-      if(data['_id'].isNotEmpty) {
+      if (data['_id'].isNotEmpty) {
         Navigator.pushNamed(context, '/game-screen');
       }
-
-
     });
+  }
 
+  startTimer(playerId, gameID) {
+    _socketClient.emit('timer', {'playerId': playerId, 'gameID': gameID});
+  }
+
+  notCorrectGameListener(BuildContext context) {
+    _socketClient.on(
+      'notCorrectGame',
+      (data) => ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(data))),
+    );
   }
 }
