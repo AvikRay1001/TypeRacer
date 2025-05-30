@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:typeracer/providers/client_state_provider.dart';
 import 'package:typeracer/providers/game_state_provider.dart';
 import 'package:typeracer/screens/create_screen.dart';
 import 'package:typeracer/screens/game_screen.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => ClientStateProvider(),),
         ChangeNotifierProvider(create: (context) => GameStateProvider(),)
       ],
       child: MaterialApp(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:typeracer/providers/client_state_provider.dart';
 import 'package:typeracer/providers/game_state_provider.dart';
 import 'package:typeracer/utils/socket_client.dart';
 
@@ -48,5 +49,15 @@ class SocketMethods {
         context,
       ).showSnackBar(SnackBar(content: Text(data))),
     );
+  }
+
+  updateTimer(BuildContext context) {
+    final clientStateProvider = Provider.of<ClientStateProvider>(
+      context,
+      listen: false,
+    );
+    _socketClient.on('timer', (data) {
+      clientStateProvider.setClientState(data);
+    });
   }
 }

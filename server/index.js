@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
                     startGameClock(gameID);
                     clearInterval(timerId);
                 }
-            },1000);
+            },1000);o
         }
     })
 });
@@ -111,7 +111,8 @@ const startGameClock = async(gameID) => {
                 console.log(time);
                 time--;
             }
-        }),1000)
+            return gameIntervalFunc;
+        })(),1000)
 }
 
 
