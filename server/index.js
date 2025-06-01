@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
                     startGameClock(gameID);
                     clearInterval(timerId);
                 }
-            },1000);o
+            },1000);
         }
     })
 });

@@ -2,10 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:typeracer/providers/client_state_provider.dart';
 import 'package:typeracer/providers/game_state_provider.dart';
+import 'package:typeracer/utils/socket_methods.dart';
 import 'package:typeracer/widgets/game_text_field.dart';
 
-class GameScreen extends StatelessWidget {
+class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  final SocketMethods _socketMethods = SocketMethods();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.updateTimer(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +27,20 @@ class GameScreen extends StatelessWidget {
     final clientStateProvider = Provider.of<ClientStateProvider>(context);
 
     return Scaffold(
-      body: Text('Game Screen'),
+      body: Center(
+        child: Column(
+          children: [
+            Text(
+              clientStateProvider.clientState['timer']['msg'].toString(),
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              clientStateProvider.clientState['timer']['countDown'].toString(),
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: const GameTextField(),
     );
   }

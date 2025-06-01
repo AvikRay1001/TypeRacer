@@ -24,6 +24,7 @@ class _GameTextFieldState extends State<GameTextField> {
     findPlayerMe(game!);
   }
 
+
   findPlayerMe(GameStateProvider game) {
     game.gameState['players'].forEach((player) {
       if (player['socketID'] == SocketClient.instance.socket!.id) {

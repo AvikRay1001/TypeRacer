@@ -8,5 +8,6 @@ class ClientStateProvider extends ChangeNotifier {
 
   setClientState(timer) {
     _clientState = ClientState(timer: timer);
+    notifyListeners();
   }
 }

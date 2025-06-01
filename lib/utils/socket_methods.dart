@@ -56,6 +56,7 @@ class SocketMethods {
       context,
       listen: false,
     );
+    print('hello from updateTimer');
     _socketClient.on('timer', (data) {
       clientStateProvider.setClientState(data);
     });
