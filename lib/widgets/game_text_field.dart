@@ -15,7 +15,10 @@ class GameTextField extends StatefulWidget {
 class _GameTextFieldState extends State<GameTextField> {
   final SocketMethods _socketMethods = SocketMethods();
   var playerMe = null;
+  bool isBtn = true;
   late GameStateProvider? game;
+
+  final TextEditingController _wordsController = TextEditingController();
 
   @override
   void initState() {
@@ -23,7 +26,6 @@ class _GameTextFieldState extends State<GameTextField> {
     game = Provider.of<GameStateProvider>(context, listen: false);
     findPlayerMe(game!);
   }
-
 
   findPlayerMe(GameStateProvider game) {
     game.gameState['players'].forEach((player) {
@@ -35,11 +37,40 @@ class _GameTextFieldState extends State<GameTextField> {
 
   handleStart(GameStateProvider game) {
     _socketMethods.startTimer(playerMe['_id'], game.gameState['id']);
+    setState(() {
+      isBtn = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final gameData = Provider.of<GameStateProvider>(context);
-    return CustomButton(text: 'START', onTap: () => handleStart(gameData));
+    return playerMe['isPartyLeader'] && isBtn
+        ? CustomButton(text: 'START', onTap: () => handleStart(gameData))
+        : TextFormField(
+          readOnly: gameData.gameState['isJoin'],
+          controller: _wordsController,
+          onChanged: (val) {},
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(
+                color: Colors.transparent,
+              ),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
+            fillColor: const Color(
+              0xffF5F5FA,
+            ),
+            hintText: "Type here",
+            hintStyle: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        );
   }
 }

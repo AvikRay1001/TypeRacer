@@ -106,7 +106,7 @@ const startGameClock = async(gameID) => {
                 const timeFormat = calculateTime(time);
                 io.to(gameID).emit('timer', {
                     countDown: timeFormat,
-                    msg: `Time Left: ${timeFormat}`
+                    msg: `Time Left`
                 });
                 console.log(time);
                 time--;

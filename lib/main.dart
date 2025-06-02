@@ -19,22 +19,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ClientStateProvider(),),
-        ChangeNotifierProvider(create: (context) => GameStateProvider(),)
+        ChangeNotifierProvider(create: (context) => ClientStateProvider()),
+        ChangeNotifierProvider(create: (context) => GameStateProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue
-        ),
+        theme: ThemeData(primarySwatch: Colors.blue),
         initialRoute: '/',
         routes: {
-          '/' : (context) => const HomeScreen(),
-          '/create-room' : (context) => const CreateRoomScreen(),
-          '/join-room' : (context) => const JoinRoomScreen(),
-          '/game-screen' : (context) => const GameScreen(),
-        }
+          '/': (context) => const HomeScreen(),
+          '/create-room': (context) => const CreateRoomScreen(),
+          '/join-room': (context) => const JoinRoomScreen(),
+          '/game-screen': (context) => const GameScreen(),
+        },
       ),
     );
   }

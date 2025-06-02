@@ -19,6 +19,7 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     _socketMethods.updateTimer(context);
+    _socketMethods.updateGame(context);
   }
 
   @override
@@ -28,17 +29,23 @@ class _GameScreenState extends State<GameScreen> {
 
     return Scaffold(
       body: Center(
-        child: Column(
-          children: [
-            Text(
-              clientStateProvider.clientState['timer']['msg'].toString(),
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              clientStateProvider.clientState['timer']['countDown'].toString(),
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40.0),
+          child: Column(
+            children: [
+              Chip(
+                label: Text(
+                  clientStateProvider.clientState['timer']['msg'].toString(),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              Text(
+                clientStateProvider.clientState['timer']['countDown'].toString(),
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: const GameTextField(),
