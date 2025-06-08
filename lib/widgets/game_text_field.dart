@@ -27,13 +27,13 @@ class _GameTextFieldState extends State<GameTextField> {
     findPlayerMe(game!);
   }
 
-  handleTextChange(String val, String gameID) {
-    var lastChar = val[val.length - 1];
-
-    if (lastChar == ' ') {
-      _socketMethods.sendUserInput(val, gameID);
+  handleTextChange(String value, String gameID) {
+    var lastChar = value[value.length - 1];
+    print(lastChar);
+    if (lastChar == " ") {
+      _socketMethods.sendUserInput(value, gameID);
       setState(() {
-        _wordsController.text = '';
+        _wordsController.text = "";
       });
     }
   }

@@ -22,6 +22,7 @@ class _GameScreenState extends State<GameScreen> {
     super.initState();
     _socketMethods.updateTimer(context);
     _socketMethods.updateGame(context);
+    _socketMethods.gameFinishedListener();
   }
 
   @override
@@ -50,43 +51,49 @@ class _GameScreenState extends State<GameScreen> {
                 ),
               ),
               const SentenceGame(),
-              game.gameState['isJoin'] ? ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: TextField(
-                  readOnly: true,
-                  onTap: () {
-                    Clipboard.setData(ClipboardData(
-                      text: game.gameState['id']
-                    )).then((_) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Copied to clipboard'),
+              game.gameState['isJoin']
+                  ? ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: TextField(
+                      readOnly: true,
+                      onTap: () {
+                        Clipboard.setData(
+                          ClipboardData(text: game.gameState['id']),
+                        ).then((_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Copied to clipboard'),
+                            ),
+                          );
+                        });
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
                         ),
-                      );
-                    } );
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.transparent),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                        fillColor: const Color(0xffF5F5FA),
+                        hintText: "Click to copy code",
+                        hintStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: const BorderSide(color: Colors.transparent),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    fillColor: const Color(0xffF5F5FA),
-                    hintText: "Click to copy code",
-                    hintStyle: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ) : Container()
+                  )
+                  : Container(),
             ],
           ),
         ),

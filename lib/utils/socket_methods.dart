@@ -21,6 +21,7 @@ class SocketMethods {
   }
 
   sendUserInput(String value, String gameID) {
+    print("Hello");
     _socketClient.emit('userInput', {'userInput': value, 'gameID': gameID});
   }
 
@@ -81,5 +82,9 @@ class SocketMethods {
         words: data['words'],
       );
     });
+  }
+
+  gameFinishedListener() {
+    _socketClient.on('done', (data) => _socketClient.off('timer'));
   }
 }

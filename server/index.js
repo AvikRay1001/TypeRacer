@@ -69,17 +69,26 @@ io.on('connection', (socket) => {
 
 
     socket.on('userInput', async({userInput, gameID}) => {
+        console.log("Hello from userInput socket");
+        console.log(userInput);
         let game = await Game.findById(gameID);
         if(!game.isJoin && !game.isOver) {
             let player = game.players.find(
-                (player) => player.socketID === socket.id
+                (playerr) => playerr.socketID === socket.id
             );
             if(game.words[player.currentWordIndex] === userInput.trim()) {
                 player.currentWordIndex = player.currentWordIndex + 1;
-                if(player.currentWordIndex === game.words.length) {
+                if(player.currentWordIndex !== game.words.length) {
                     game = await game.save();
                     io.to(gameID).emit('updateGame', game);
                 }
+            } else {
+                let endTime = new Date().getTime();
+                let {startTime} = game;
+                player.WPM = calculateWPM(endTime, startTime, player);
+                game = await game.save();
+                socket.emit('done');
+                io.to(gameID).emit('updateGame', game);
             }
         }
     })
@@ -126,6 +135,25 @@ const startGameClock = async(gameID) => {
                 });
                 console.log(time);
                 time--;
+            } else {
+                (async() => {
+                    try {
+                        let endTime = new Date().getTime();
+                        let game = await Game.findById(gameID);
+                        let {startTime} = game;
+                        game.isOver = true;
+                        game.players.forEach((player, index) => {
+                            if(player.WPM === -1){
+                                game.players[index].WPM = calculateWPM(endTime, startTime, player);
+                            }
+                        })
+                        game = await game.save();
+                        io.to(gameID).emit('updateGame', game);
+                        clearInterval(timerId);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                })();
             }
             return gameIntervalFunc;
         })(),1000)
@@ -138,7 +166,13 @@ const calculateTime = (time) => {
     return `${min}:${sec < 10 ? "0" +sec: sec}`;
 }
 
-
+const calculateWPM = (endTime, startTime, player) => {
+    const timeTakenInSec = (endTime - startTime)/1000;
+    const timeTaken = timeTakenInSec/60;
+    let wordsTyped = player.currentWordIndex;
+    const WPM = Math.floor(wordsTyped/timeTaken);
+    return WPM;
+}
 
 mongooose.connect(DB).then(() => {
     console.log("Connection Successful");
